@@ -41,5 +41,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(SignUp);
             }
         });
+
+        startActivity(new Intent(this, Home.class));
     }
 }

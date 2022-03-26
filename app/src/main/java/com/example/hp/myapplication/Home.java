@@ -53,13 +53,10 @@ public class Home extends AppCompatActivity
         category = database.getReference("Category");
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent cart = new Intent(Home.this,Cart.class);
-                startActivity(cart);
-            }
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(view -> {
+            Intent cart = new Intent(Home.this,Cart.class);
+            startActivity(cart);
         });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -72,7 +69,7 @@ public class Home extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         View headerview = navigationView.getHeaderView(0);
-        txtFullName = (TextView)headerview.findViewById(R.id.txtFullName);
+        txtFullName = headerview.findViewById(R.id.txtFullName);
         txtFullName.setText(Common.currentUser.getName());
 
         //Menu
