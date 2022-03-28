@@ -8,25 +8,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:400368215652:android:d0e71f369db5a8dfdca171",
+        "mobilesdk_app_id": "1:400368215652:android:60333ebe24ea9790dca171",
         "android_client_info": {
-          "package_name": "com.example.fastfood1"
+          "package_name": "com.example.hp.myapplication"
         }
       },
       "oauth_client": [
         {
-          "client_id": "400368215652-40gdh4c0mti344o1fskhvppkvfqpb3aj.apps.googleusercontent.com",
+          "client_id": "400368215652-qk83ep7f6b5k53r628fn38rqotssanlg.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.fastfood1",
-            "certificate_hash": "d35c175bbe1852facf4c1942e7a8bc390ca0022c"
-          }
-        },
-        {
-          "client_id": "400368215652-m9tpep6hm7f56dj1uu28bu8ehghe74p0.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.fastfood1",
+            "package_name": "com.example.hp.myapplication",
             "certificate_hash": "393bfcd2aac35cd9e9e84dbc1d2a3e2ed702b40c"
           }
         },

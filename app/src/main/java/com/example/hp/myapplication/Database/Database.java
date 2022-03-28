@@ -1,5 +1,6 @@
 package com.example.hp.myapplication.Database;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -20,6 +21,7 @@ public class Database extends SQLiteAssetHelper {
         super(context, DB_NAME, null, DB_VER);
     }
 
+    @SuppressLint("Range")
     public List<Order> getCarts()
     {
         SQLiteDatabase db = getReadableDatabase();

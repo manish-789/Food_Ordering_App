@@ -9,16 +9,17 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.FirebaseApp;
+
 public class MainActivity extends AppCompatActivity {
 
-    Button btnSignIn,btnSignUp;
+    Button btnSignIn;
     TextView slogan;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        btnSignUp = (Button) findViewById(R.id.btnSignUp);
+        FirebaseApp.initializeApp(this);
         btnSignIn = (Button)findViewById(R.id.btnSignIn);
 
         slogan = (TextView)findViewById(R.id.slogan);
@@ -33,15 +34,5 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-
-        btnSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            Intent SignUp = new Intent(MainActivity.this, SignUp.class);
-            startActivity(SignUp);
-            }
-        });
-
-        startActivity(new Intent(this, Home.class));
     }
 }
