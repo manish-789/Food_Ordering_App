@@ -29,7 +29,8 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.util.concurrent.TimeUnit;
 
-public class SignIn extends AppCompatActivity {
+public class
+SignIn extends AppCompatActivity {
     EditText edtPhone,edtPassword;
     Button btnSignIn;
     @Override
