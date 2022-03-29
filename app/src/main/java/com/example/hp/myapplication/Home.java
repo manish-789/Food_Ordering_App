@@ -53,10 +53,13 @@ public class Home extends AppCompatActivity
         category = database.getReference("Category");
 
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(view -> {
-            Intent cart = new Intent(Home.this,Cart.class);
-            startActivity(cart);
+        FloatingActionButton fab =(FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent cart = new Intent(Home.this, Cart.class);
+                startActivity(cart);
+            }
         });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -69,7 +72,7 @@ public class Home extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         View headerview = navigationView.getHeaderView(0);
-        txtFullName = headerview.findViewById(R.id.txtFullName);
+        txtFullName =(TextView)headerview.findViewById(R.id.txtFullName);
         txtFullName.setText(Common.currentUser.getName());
 
         //Menu
@@ -88,7 +91,7 @@ public class Home extends AppCompatActivity
                 //Picasso.get(getApplicationContext()).load(model.getImage()).into(viewHolder.imageView);
                 Glide.with(getBaseContext()).load(model.getImage()).into(viewHolder.imageView);
 
-               final Category clickItem = model;
+                final Category clickItem = model;
                 viewHolder.setItemClickListener(new ItemClickListener() {
                     @Override
                     public void onClick(View view, int position, boolean isLongClick) {

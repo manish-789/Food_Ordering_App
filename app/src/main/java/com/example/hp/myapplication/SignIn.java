@@ -31,8 +31,9 @@ import java.util.concurrent.TimeUnit;
 
 public class
 SignIn extends AppCompatActivity {
-    EditText edtPhone,edtPassword;
+    EditText edtPhone , edtPassword;
     Button btnSignIn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,7 +110,7 @@ private void signInUser(PhoneAuthCredential credential) {
         FirebaseAuth.getInstance().signInWithCredential(credential)
         .addOnCompleteListener(task -> {
         if(task.isSuccessful()){
-        startActivity(new Intent(this,Home.class));
+        startActivity(new Intent(SignIn.this,Home.class));
         finish();
 
         } else{
