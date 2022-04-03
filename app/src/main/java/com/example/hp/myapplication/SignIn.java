@@ -1,7 +1,6 @@
 package com.example.hp.myapplication;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,25 +12,19 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.hp.myapplication.Common.Common;
-import com.example.hp.myapplication.Model.User;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class
 SignIn extends AppCompatActivity {
-    EditText edtPhone , edtPassword;
+    EditText edtPhone;
     Button btnSignIn;
 
     @Override
@@ -82,17 +75,12 @@ SignIn extends AppCompatActivity {
                                             dialog.setCanceledOnTouchOutside(false);
                                             EditText verifycode = dialog.findViewById(R.id.verifycode);
                                             Button btnverifyotp = dialog.findViewById(R.id.btnverifyotp);
-                                            btnverifyotp.setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    String verificationCode = verifycode.getText().toString();
-                                                    if(verificationId.isEmpty()) return;
-                                                    //create a credential
-                                                    PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId,verificationCode);
-                                                    signInUser(credential);
-                                                }
-
-
+                                            btnverifyotp.setOnClickListener(v1 -> {
+                                                String verificationCode = verifycode.getText().toString();
+                                                if(verificationId.isEmpty()) return;
+                                                //create a credential
+                                                PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId,verificationCode);
+                                                signInUser(credential);
                                             });
 
                                             dialog.show();
@@ -110,11 +98,11 @@ private void signInUser(PhoneAuthCredential credential) {
         FirebaseAuth.getInstance().signInWithCredential(credential)
         .addOnCompleteListener(task -> {
         if(task.isSuccessful()){
-        startActivity(new Intent(SignIn.this,Home.class));
+        startActivity(new Intent(SignIn.this, Home.class));
         finish();
 
         } else{
-        Log.d("TAG", "onComplete:"+task.getException().getLocalizedMessage());
+        Log.d("TAG", "onComplete:"+ Objects.requireNonNull(task.getException()).getLocalizedMessage());
         }
         });
         }
