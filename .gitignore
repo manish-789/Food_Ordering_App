@@ -1,4 +1,11 @@
 # Project exclude paths
-/.gradle/
-/app/build/
-/app/build/intermediates/javac/debug/classes/
+*.iml
+.gradle
+/local.properties
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild

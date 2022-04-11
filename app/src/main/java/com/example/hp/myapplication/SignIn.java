@@ -17,7 +17,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -30,11 +29,15 @@ SignIn extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            startActivity(new Intent(SignIn.this, Home.class));
+            finish();
+        }
         setContentView(R.layout.activity_sign_in);
 
-        edtPhone = (MaterialEditText)findViewById(R.id.edtPhone);
+        edtPhone = findViewById(R.id.edtPhone);
 
-        btnSignIn = (Button)findViewById(R.id.btnSignIn);
+        btnSignIn = findViewById(R.id.btnSignIn);
 
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override

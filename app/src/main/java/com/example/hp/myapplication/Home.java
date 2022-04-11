@@ -16,13 +16,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.hp.myapplication.Common.Common;
-import com.example.hp.myapplication.Interface.ItemClickListener;
 import com.example.hp.myapplication.Model.Category;
 import com.example.hp.myapplication.ViewHolder.MenuViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -43,7 +42,7 @@ public class Home extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Menu");
 
         setSupportActionBar(toolbar);
@@ -53,30 +52,27 @@ public class Home extends AppCompatActivity
         category = database.getReference("Category");
 
 
-        FloatingActionButton fab =(FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent cart = new Intent(Home.this, Cart.class);
-                startActivity(cart);
-            }
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(view -> {
+            Intent cart = new Intent(Home.this, Cart.class);
+            startActivity(cart);
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         View headerview = navigationView.getHeaderView(0);
-        txtFullName =(TextView)headerview.findViewById(R.id.txtFullName);
+        txtFullName = headerview.findViewById(R.id.txtFullName);
 
 
         //Menu
-        recycle_menu  = (RecyclerView)findViewById(R.id.recycler_menu);
+        recycle_menu  = findViewById(R.id.recycler_menu);
         recycle_menu.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recycle_menu.setLayoutManager(layoutManager);
@@ -88,18 +84,12 @@ public class Home extends AppCompatActivity
             @Override
             protected void populateViewHolder(MenuViewHolder viewHolder, Category model, int position) {
                 viewHolder.txtMenuName.setText(model.getName());
-                //Picasso.get(getApplicationContext()).load(model.getImage()).into(viewHolder.imageView);
                 Glide.with(getBaseContext()).load(model.getImage()).into(viewHolder.imageView);
 
-                final Category clickItem = model;
-                viewHolder.setItemClickListener(new ItemClickListener() {
-                    @Override
-                    public void onClick(View view, int position, boolean isLongClick) {
-                        //Toast.makeText(Home.this, ""+clickItem.getName(), Toast.LENGTH_SHORT).show();
-                        Intent foodlist = new Intent(Home.this,FoodList.class);
-                        foodlist.putExtra("CategoryId",adapter.getRef(position).getKey());
-                        startActivity(foodlist);
-                    }
+                viewHolder.setItemClickListener((view, position1, isLongClick) -> {
+                    Intent foodlist = new Intent(Home.this,FoodList.class);
+                    foodlist.putExtra("CategoryId",adapter.getRef(position1).getKey());
+                    startActivity(foodlist);
                 });
             }
         };
@@ -108,7 +98,7 @@ public class Home extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -142,14 +132,10 @@ public class Home extends AppCompatActivity
         } else if (id == R.id.nav_orders) {
 
         } else if (id == R.id.nav_log_out) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+            FirebaseAuth.getInstance().signOut();
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

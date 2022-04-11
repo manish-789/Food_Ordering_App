@@ -1,8 +1,6 @@
 package com.example.hp.myapplication;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -14,11 +12,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.hp.myapplication.Common.Common;
 import com.example.hp.myapplication.Database.Database;
 import com.example.hp.myapplication.Model.Order;
 import com.example.hp.myapplication.Model.Request;
 import com.example.hp.myapplication.ViewHolder.CartAdapter;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -51,20 +49,15 @@ public class Cart extends AppCompatActivity {
 
         //Init
 
-        recyclerView = (RecyclerView)findViewById(R.id.listCart);
+        recyclerView = findViewById(R.id.listCart);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        txtTotalPrice = (TextView)findViewById(R.id.total);
-        btnPlace = (Button)findViewById(R.id.btnPlaceOrder);
+        txtTotalPrice = findViewById(R.id.total);
+        btnPlace = findViewById(R.id.btnPlaceOrder);
 
-        btnPlace.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAlertDialog();
-            }
-        });
+        btnPlace.setOnClickListener(v -> showAlertDialog());
         loadListFood();
     }
 
@@ -81,25 +74,22 @@ public class Cart extends AppCompatActivity {
             edtAddress.setLayoutParams(lp);
             builder.setView(edtAddress);
             builder.setIcon(R.drawable.ic_shopping_cart_black_24dp);
-            builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
+            builder.setPositiveButton("YES", (dialog, which) -> {
 //create new request
-                    Request request = new Request(
-                            Common.currentUser.getPhone(),
-                            Common.currentUser.getName(),
-                            edtAddress.getText().toString(),
-                            txtTotalPrice.getText().toString(),
-                            cart
-                    );
-                    //submit to firebase
-                    //currentMilli to key
-                    requests.child(String.valueOf(System.currentTimeMillis())).setValue(request);
-                    //delete cart
-                    new Database(getBaseContext()).cleanCart();
-                    Toast.makeText(Cart.this, "Your  Order has been Confirmed!", Toast.LENGTH_SHORT).show();
-                    finish();
-                }
+                Request request = new Request(
+                        FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber(),
+                        FirebaseAuth.getInstance().getCurrentUser().getDisplayName(),
+                        edtAddress.getText().toString(),
+                        txtTotalPrice.getText().toString(),
+                        cart
+                );
+                //submit to firebase
+                //currentMilli to key
+                requests.child(String.valueOf(System.currentTimeMillis())).setValue(request);
+                //delete cart
+                new Database(getBaseContext()).cleanCart();
+                Toast.makeText(Cart.this, "Your  Order has been Confirmed!", Toast.LENGTH_SHORT).show();
+                finish();
             });
             builder.show();
         }

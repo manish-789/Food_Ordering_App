@@ -1,11 +1,11 @@
 package com.example.hp.myapplication;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
@@ -23,13 +23,13 @@ import com.google.firebase.database.ValueEventListener;
 
 public class FoodDetail extends AppCompatActivity {
 
-    TextView food_name,food_price,food_description;
+    TextView food_name, food_price, food_description;
     ImageView food_image;
     CollapsingToolbarLayout collapsingToolbarLayout;
     FloatingActionButton btncart;
     ElegantNumberButton numberButton;
 
-    String foodId="";
+    String foodId = "";
 
     FirebaseDatabase database;
     DatabaseReference foods;
@@ -46,37 +46,33 @@ public class FoodDetail extends AppCompatActivity {
         foods = database.getReference("Foods");
 
         //init view
-        numberButton = (ElegantNumberButton)findViewById(R.id.number_button);
-        btncart = (FloatingActionButton)findViewById(R.id.btncart);
+        numberButton = findViewById(R.id.number_button);
+        btncart = findViewById(R.id.btncart);
 
-        btncart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new Database(getBaseContext()).addToCart(new Order(foodId,
-                        currentFood.getName(),
-                        numberButton.getNumber(),
-                        currentFood.getPrice(),
-                        currentFood.getDiscount()));
-                Toast.makeText(FoodDetail.this, "Added to cart", Toast.LENGTH_SHORT).show();
-            }
+        btncart.setOnClickListener(v -> {
+            new Database(getBaseContext()).addToCart(new Order(foodId,
+                    currentFood.getName(),
+                    numberButton.getNumber(),
+                    currentFood.getPrice(),
+                    currentFood.getDiscount()));
+            Toast.makeText(FoodDetail.this, "Added to cart", Toast.LENGTH_SHORT).show();
         });
 
-        food_description = (TextView)findViewById(R.id.food_description);
-        food_name = (TextView)findViewById(R.id.food_name);
-        food_price = (TextView)findViewById(R.id.food_price);
+        food_description = findViewById(R.id.food_description);
+        food_name = findViewById(R.id.food_name);
+        food_price = findViewById(R.id.food_price);
 
-        food_image = (ImageView)findViewById(R.id.img_food);
+        food_image = findViewById(R.id.img_food);
 
-        collapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing);
+        collapsingToolbarLayout = findViewById(R.id.collapsing);
         collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppbar);
         collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppbar);
-        
+
         //get foodId
-        
-        if(getIntent() != null)
+
+        if (getIntent() != null)
             foodId = getIntent().getStringExtra("FoodId");
-        if(!foodId.isEmpty())
-        {
+        if (!foodId.isEmpty()) {
             getDetailFood(foodId);
         }
     }
@@ -84,7 +80,7 @@ public class FoodDetail extends AppCompatActivity {
     private void getDetailFood(String foodId) {
         foods.child(foodId).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 currentFood = dataSnapshot.getValue(Food.class);
                 //set Image
                 Glide.with(getBaseContext()).load(currentFood.getImage()).into(food_image);
@@ -95,7 +91,7 @@ public class FoodDetail extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });

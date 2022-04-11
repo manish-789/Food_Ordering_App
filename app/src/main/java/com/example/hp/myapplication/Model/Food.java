@@ -1,19 +1,21 @@
 package com.example.hp.myapplication.Model;
 
 public class Food {
-    private String Name, Image,Description,Price,Discount,MenuId;
+    private String Name, Image,Description,MenuId, CategoryId;
+    private String Price, Discount;
 
     public Food(){
 
     }
 
-    public Food(String name, String image, String description, String price, String discount, String menuId){
+    public Food(String name, String image, String description, String menuId, String categoryId, String price, String discount) {
         Name = name;
         Image = image;
         Description = description;
+        MenuId = menuId;
+        CategoryId = categoryId;
         Price = price;
         Discount = discount;
-        MenuId = menuId;
     }
 
     public String getName() {
@@ -62,5 +64,13 @@ public class Food {
 
     public void setMenuId(String menuId) {
         MenuId = menuId;
+    }
+
+    public String getCategoryId() {
+        return CategoryId;
+    }
+
+    public void setCategoryId(String categoryId) {
+        CategoryId = categoryId;
     }
 }

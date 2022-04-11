@@ -20,9 +20,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         FirebaseApp.initializeApp(this);
-        btnSignIn = (Button)findViewById(R.id.btnSignIn);
+        btnSignIn = findViewById(R.id.btnSignIn);
 
-        slogan = (TextView)findViewById(R.id.slogan);
+        slogan = findViewById(R.id.slogan);
 
         Typeface face = Typeface.createFromAsset(getAssets(),"Fonts/NABILA.TTF");
         slogan.setTypeface(face);
