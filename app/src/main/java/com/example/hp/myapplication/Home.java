@@ -128,11 +128,10 @@ public class Home extends AppCompatActivity
         if (id == R.id.nav_menu) {
             // Handle the camera action
         } else if (id == R.id.nav_cart) {
-
-        } else if (id == R.id.nav_orders) {
-
+startActivity(new Intent(this, Cart.class));
         } else if (id == R.id.nav_log_out) {
             FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(this, SignIn.class));
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
