@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.hp.myapplication.ui.login.AdminLoginActivity;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
@@ -24,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 public class
 SignIn extends AppCompatActivity {
     EditText edtPhone;
-    Button btnSignIn;
+    Button btnSignIn, adminLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,15 +39,16 @@ SignIn extends AppCompatActivity {
         edtPhone = findViewById(R.id.edtPhone);
 
         btnSignIn = findViewById(R.id.btnSignIn);
+        adminLogin = findViewById(R.id.adminLogin);
 
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String Phonenumber= edtPhone.getText().toString();
+                String Phonenumber = edtPhone.getText().toString();
                 if (Phonenumber.isEmpty())
-                    Toast.makeText( SignIn.this, "Enter your phone number", Toast.LENGTH_SHORT).show();
-                else{
-                    Toast.makeText( SignIn.this, "otp send", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignIn.this, "Enter your phone number", Toast.LENGTH_SHORT).show();
+                else {
+                    Toast.makeText(SignIn.this, "otp send", Toast.LENGTH_SHORT).show();
 
                     PhoneAuthOptions options =
                             PhoneAuthOptions.newBuilder(FirebaseAuth.getInstance())
@@ -63,7 +65,7 @@ SignIn extends AppCompatActivity {
 
                                         @Override
                                         public void onVerificationFailed(@NonNull FirebaseException e) {
-                                            Log.d("TAG", "onVerificationFailed:" +e.getLocalizedMessage());
+                                            Log.d("TAG", "onVerificationFailed:" + e.getLocalizedMessage());
                                         }
 
                                         @Override
@@ -72,7 +74,7 @@ SignIn extends AppCompatActivity {
 
                                             super.onCodeSent(verificationId, forceResendingToken);
 
-                                            Dialog dialog=new Dialog(SignIn.this);
+                                            Dialog dialog = new Dialog(SignIn.this);
                                             dialog.setContentView(R.layout.verify_popup);
 
                                             dialog.setCanceledOnTouchOutside(false);
@@ -80,9 +82,9 @@ SignIn extends AppCompatActivity {
                                             Button btnverifyotp = dialog.findViewById(R.id.btnverifyotp);
                                             btnverifyotp.setOnClickListener(v1 -> {
                                                 String verificationCode = verifycode.getText().toString();
-                                                if(verificationId.isEmpty()) return;
+                                                if (verificationId.isEmpty()) return;
                                                 //create a credential
-                                                PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId,verificationCode);
+                                                PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, verificationCode);
                                                 signInUser(credential);
                                             });
 
@@ -95,18 +97,21 @@ SignIn extends AppCompatActivity {
                 }
             }
         });
+        adminLogin.setOnClickListener(view -> {
+            startActivity(new Intent(SignIn.this, AdminLoginActivity.class));
+        });
     }
 
-private void signInUser(PhoneAuthCredential credential) {
+    private void signInUser(PhoneAuthCredential credential) {
         FirebaseAuth.getInstance().signInWithCredential(credential)
-        .addOnCompleteListener(task -> {
-        if(task.isSuccessful()){
-        startActivity(new Intent(SignIn.this, Home.class));
-        finish();
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        startActivity(new Intent(SignIn.this, Home.class));
+                        finish();
 
-        } else{
-        Log.d("TAG", "onComplete:"+ Objects.requireNonNull(task.getException()).getLocalizedMessage());
-        }
-        });
-        }
+                    } else {
+                        Log.d("TAG", "onComplete:" + Objects.requireNonNull(task.getException()).getLocalizedMessage());
+                    }
+                });
+    }
 }
